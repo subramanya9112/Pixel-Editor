@@ -13,7 +13,6 @@ const writer = require('./writer');
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow({
-        icon: __dirname + '/logo.png',
         width: 1200,
         height: 680,
         minWidth: 940,
@@ -22,14 +21,14 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            devTools: true,
+            devTools: false,
             enableRemoteModule: true,
             webSecurity: false
         }
     });
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     mainWindow.on('closed', () => mainWindow = null);
-    mainWindow.webContents.openDevTools();
+    mainWindow.maximize();
 
     ipc.on('minimizeApp', () => {
         mainWindow.minimize();
