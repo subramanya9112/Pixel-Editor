@@ -38,22 +38,4 @@
       }
     }
   }
-
-  .copyclipboard {
-    height: 50px;
-    background-color: #282c34;
-    border: 1px solid #282c34;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #ffffff;
-    cursor: pointer;
-
-    &:hover {
-      font-size: 20px;
-      color: #ffffffaa;
-    }
-  }
 }

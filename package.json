@@ -2,6 +2,7 @@
   "name": "pixeleditor",
   "version": "0.1.0",
   "private": true,
+  "main": "public/electron.js",
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
@@ -17,6 +18,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "electron-dev": "concurrently \"SET BROWSER=none && npm start\" \"wait-on http://localhost:3000 && electron . --no-sandbox\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,6 +46,7 @@
     "electron": "^13.2.1",
     "electron-builder": "^22.11.7",
     "electron-is-dev": "^2.0.0",
-    "electron-rebuild": "^3.1.1"
+    "electron-rebuild": "^3.1.1",
+    "wait-on": "^6.0.0"
   }
 }

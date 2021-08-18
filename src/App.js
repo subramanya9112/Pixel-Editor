@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import ColorPalette from './Components/ColorPalette';
 import DrawBoard from './Components/DrawBoard';
+import Header from './Components/Header';
 import Size from './Components/Size';
 import CreateIcon from '@material-ui/icons/Create';
 import ClearIcon from '@material-ui/icons/Clear';
 import ClearAllIcon from '@material-ui/icons/ClearAll';
 import './App.scss';
+const { ipcRenderer } = window.require('electron');
 
 function App() {
   const [size, setSize] = useState([10, 10]);
@@ -30,6 +32,45 @@ function App() {
       return newArr;
     });
   }, [size, setData]);
+
+  useEffect(() => {
+    ipcRenderer.on('clearAll', () => {
+      setSize([10, 10]);
+      let newArr = new Array(10);
+      for (let i = 0; i < 10; i++) {
+        newArr[i] = new Array(10);
+        for (let j = 0; j < 10; j++) {
+          newArr[i][j] = ["0xFF", "#FFFFFF"];
+        }
+      }
+      setData(newArr);
+    });
+
+    ipcRenderer.on('openData', (e, colorData) => {
+      setSize([colorData['size'][0], colorData['size'][1]]);
+      setData(colorData['data']);
+    });
+
+    return () => {
+      ipcRenderer.removeAllListeners('clearAll');
+      ipcRenderer.removeAllListeners('openData');
+    }
+  }, [setSize, setData]);
+
+
+  useEffect(() => {
+    ipcRenderer.on('saveData', (event) => {
+      console.log("asfd");
+      event.sender.send('saveDataReply', {
+        'size': size,
+        'data': data
+      });
+    });
+
+    return () => {
+      ipcRenderer.removeAllListeners('saveData');
+    }
+  }, [size, data]);
 
   const colorPalette = [
     ["0x00", "#000000"],
@@ -100,6 +141,7 @@ function App() {
 
   return (
     <div className="App">
+      <Header />
       <Size size={size} setSize={setSize} />
       <div className="main">
         <div className="tools">
@@ -119,7 +161,11 @@ function App() {
               });
             }} />
         </div>
-        <ColorPalette colorPalette={colorPalette} selectedColor={setSelectedColor} setSelected={setSelected} />
+        <ColorPalette
+          colorPalette={colorPalette}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          setSelected={setSelected} />
         <DrawBoard size={size} data={data} onClick={(i, j) => {
           if (selected === 0) {
             setData(oldData => {
@@ -137,7 +183,6 @@ function App() {
           }
         }} />
       </div>
-      <div className="copyclipboard">Copy to clipboard</div>
     </div>
   );
 }
