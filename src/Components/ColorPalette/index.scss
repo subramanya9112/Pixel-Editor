@@ -1,0 +1,46 @@
+.colorPalette {
+    width: 120px;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 30px);
+    align-items: start;
+    justify-content: start;
+    column-gap: 0px;
+    row-gap: 0px;
+    grid-gap: 0px;
+    margin: 10px;
+
+    .colorPaletteItem {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #66666666;
+        cursor: pointer;
+        position: relative;
+        display: inline-block;
+
+        .toolTipText {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            transform: translate(28px, -2px);
+        }
+
+        &:hover {
+            width: 26px;
+            height: 26px;
+            border: 2px solid #000000;
+            .toolTipText {
+                visibility: visible;
+            }
+        }
+    }
+
+    .toolTip {
+    }
+}
